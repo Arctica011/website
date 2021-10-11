@@ -1,0 +1,25 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\Http\Resources\UserResource;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
+use Tests\CrudTestCase;
+use Tests\TestCase;
+
+class {{ class }} extends CrudTestCase
+{
+
+    use RefreshDatabase;
+
+    protected $user;
+    protected $model = {{ model }}::class;
+    protected $resource = {{ resource }}::class;
+    protected $path ="{{ path }}";
+
+    public function setUp(): void
+    {
+        parent::setUp();
+    }
+}

@@ -1,0 +1,235 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ namespacedModel }};
+use {{ rootNamespace }}Http\Controllers\Controller;
+use App\Http\Resources\{{ modelResource }};
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Jdlx\Http\Controllers\Traits\CanFilterSortAndPage;
+
+class {{ class }} extends Controller
+{
+    use CanFilterSortAndPage;
+
+    /**
+     * @OA\Get(
+     *   path="/{{ path }}",
+     *   tags={"{{ tag }}"},
+     *   summary="Retrieve page of {{ entities }}",
+     *   operationId="list",
+     *
+     *   @OA\Parameter(ref="#/components/parameters/pageParameter"),
+     *   @OA\Parameter(ref="#/components/parameters/limitParameter"),
+     *   @OA\Parameter(ref="#/components/parameters/sortParameter"),
+     *   @OA\Parameter(ref="#/components/parameters/filterParameter"),
+     *
+     *   @OA\Response(response="401", ref="#/components/responses/Unauthorized"),
+     *   @OA\Response(
+     *      response="200",
+     *      description="Page of {{ entities }}",
+     *      @OA\JsonContent(
+     *          @OA\Property(
+     *              property="data",
+     *              type="object",
+     *              allOf={
+     *                   @OA\Schema(ref="#/components/schemas/Paginator"),
+     *                   @OA\Schema(
+     *                       @OA\Property( property="items", type="array",  @OA\Items(ref="#/components/schemas/{{ modelSchema }}"))
+     *                  ),
+     *               }
+     *          )
+     *       )
+     *    ),
+     *    security={
+     *      {
+     *          "bearer_auth": {},
+     *          "cookie_auth": {},
+     *      }
+     *    },
+     * )
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function index(Request $request)
+    {
+        $items = {{ model }}::with([ {{ with_models }} ]);
+        $paging = $this->filterSortAndPage($request, $items, {{ model }}::getFilterableFields());
+        $data = $paging->jsonSerialize();
+
+        $data["items"] = {{ modelResource }}::collection($paging->items());
+        return response()->success($data, 200);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/{{ path }}",
+     *     tags={"{{ tag }}"},
+     *     summary="Create a new {{ entity }}",
+     *     operationId="create",
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              ref="#/components/schemas/{{ modelSchema }}"
+     *          )
+     *     ),
+     *     @OA\Response(
+     *        response="201",
+     *        description="{{ model }} created",
+     *        @OA\JsonContent(
+     *          @OA\Property( property="data", ref="#/components/schemas/{{ modelSchema }}" )
+     *        )
+     *    ),
+     *    @OA\Response(response="401", ref="#/components/responses/Unauthorized"),
+     *    @OA\Response(response="422", ref="#/components/responses/Invalid"),
+     *
+     *    security={
+     *      {
+     *          "bearer_auth": {},
+     *          "cookie_auth": {},
+     *      }
+     *    },
+     * )
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            // Add validation rules
+        ]);
+
+        $fields = $request->only({{ model }}::getWritableFields());
+
+        ${{ modelVariable }} = new {{ model }}($fields);
+        ${{ modelVariable }}->save();
+
+        return response()->success(new {{ modelResource }}(${{ modelVariable }}), 201);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/{{ path }}/{id}",
+     *     tags={"{{ tag }}"},
+     *     summary="Retrieve a {{ entity }}",
+     *     operationId="get",
+     *   @OA\Parameter(ref="#/components/parameters/idParameter"),
+     *   @OA\Response(
+     *      response="200",
+     *      description="Retrieving a {{ entity }}",
+     *      @OA\JsonContent(
+     *          @OA\Property( property="data", ref="#/components/schemas/{{ modelSchema }}" )
+     *       )
+     *    ),
+     *    @OA\Response(response="404", ref="#/components/responses/NotFound"),
+     *    @OA\Response(response="401", ref="#/components/responses/Unauthorized"),
+     *     security={
+     *      {
+     *          "bearer_auth": {},
+     *          "cookie_auth": {},
+     *      }
+     *    },
+     * )
+     *
+     *
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @return \Illuminate\Http\Response
+     */
+    public function show({{ model }} ${{ modelVariable }})
+    {
+
+        return response()->success(new {{ modelResource }}(${{ modelVariable }}));
+    }
+
+    /**
+     * @OA\Put(
+     *     path="/{{ path }}/{id}",
+     *     tags={"{{ tag }}"},
+     *     summary="Update a {{ entity }}",
+     *     operationId="update",
+     *     @OA\Parameter(ref="#/components/parameters/idParameter"),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              ref="#/components/schemas/{{ modelSchema }}"
+     *          )
+     *     ),
+     *     @OA\Response(
+     *        response="200",
+     *        description="Updated {{ entity }}",
+     *        @OA\JsonContent(
+     *          @OA\Property( property="data", ref="#/components/schemas/{{ modelSchema }}" )
+     *        )
+     *    ),
+     *    @OA\Response(response="401", ref="#/components/responses/Unauthorized"),
+     *    @OA\Response(response="422", ref="#/components/responses/Invalid"),
+     *     security={
+     *      {
+     *          "bearer_auth": {},
+     *          "cookie_auth": {},
+     *      }
+     *    },
+     * )
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, {{ model }} ${{ modelVariable }})
+    {
+        $request->validate([
+            // Write validation rules
+        ]);
+
+        $fields = $request->only({{ model }}::getEditableFields());
+        ${{ modelVariable }}->fill($fields);
+        ${{ modelVariable }}->save();
+        return response()->success(new {{ modelResource }}(${{ modelVariable }}));
+    }
+
+    /**
+     * @OA\Delete(
+     *     path="/{{ path }}/{id}",
+     *     tags={"{{ tag }}"},
+     *     summary="Delete a {{ entity }}",
+     *     operationId="delete",
+     *     @OA\Parameter(ref="#/components/parameters/idParameter"),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              ref="#/components/schemas/{{ modelSchema }}"
+     *          )
+     *     ),
+     *     @OA\Response(
+     *        response="200",
+     *        description="Confirmation {{ entity }}",
+     *        @OA\JsonContent(
+     *          @OA\Property( property="data", ref="#/components/schemas/{{ modelSchema }}" )
+     *        )
+     *    ),
+     *
+     *    @OA\Response(response="404", ref="#/components/responses/NotFound"),
+     *     security={
+     *      {
+     *          "bearer_auth": {},
+     *          "cookie_auth": {},
+     *      }
+     *    },
+     * )
+     *
+     * @throws \Exception
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy({{ model }} ${{ modelVariable }})
+    {
+         ${{ modelVariable }}->delete();
+         return response()->success([
+             "id" => ${{ modelVariable }}->id,
+             "deleted" => true
+         ], 200);
+     }
+}

@@ -1,0 +1,31 @@
+import React, {Fragment}from "react";
+import {Switch} from "react-router";
+import PrivateRoute from "../../../shared/components/PrivateRoute";
+import {{ entity }}List from "./{{ entity }}List";
+import {{ entity }}Add from "./{{ entity }}Add";
+import {{ entity }}Edit from "./{{ entity }}Edit";
+import {{ entity }}View from "./{{ entity }}View";
+
+export default () => (
+  <Switch>
+    < PrivateRoute
+      exact
+      path="/admin/{{ lc_entity }}/new"
+      component={{{ entity }}Add}
+    />
+    <PrivateRoute
+      exact
+      path="/admin/{{ lc_entity }}/:id/edit"
+      component={{{ entity }}Edit}
+    />
+    < PrivateRoute
+      exact
+      path="/admin/{{ lc_entity }}/:id"
+      component={{{ entity }}View}
+    />
+    <PrivateRoute
+      path="/admin/{{ lc_entity }}"
+      component={{{ entity }}List}
+    />
+  </Switch>
+)

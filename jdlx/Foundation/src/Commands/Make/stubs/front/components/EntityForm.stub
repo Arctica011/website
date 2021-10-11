@@ -1,0 +1,46 @@
+import React from "react";
+import PropTypes from "prop-types";
+import {CircularProgress, withStyles} from "@material-ui/core";
+import api from "../../../../services/api";
+import CreateUpdateForm from "../../../../lib/crud-tools/crud/CreateUpdateForm";
+import {{ entity }}Model from "../{{ entity }}Model";
+
+function {{ entity }}Form(props) {
+    const {
+        classes,
+        entity,
+        onSaved,
+        mode
+    } = props;
+
+    const values = mode === "create" ? {} : entity;
+    const loading = mode === "update" && !entity;
+
+    return (
+        <div className={classes.container}>
+            {loading && <CircularProgress/>}
+            {!loading && <CreateUpdateForm
+                crudApi={api.{{ camel_entity }}}
+                fields={{{ entity }}Model.fields}
+                mode={mode}
+                defaultValues={values}
+                onSaved={onSaved}
+            />}
+        </div>
+    );
+}
+
+{{ entity }}Form.propTypes = {
+    {{ camel_entity }}: PropTypes.object
+};
+
+
+const styles = {
+    container: {
+        minHeight: "50px",
+        padding: "20px"
+    }
+};
+
+
+export default withStyles(styles)({{ entity }}Form);

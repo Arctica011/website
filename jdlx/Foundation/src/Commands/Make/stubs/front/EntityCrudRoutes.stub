@@ -1,0 +1,31 @@
+import React, {lazy, Suspense} from "react";
+import LoadingScreen from "../../../components/LoadingScreen";
+
+const Loadable = (Component) => (props) => (
+    <Suspense fallback={<LoadingScreen/>}>
+        <Component {...props} />
+    </Suspense>
+);
+const {{ entity }}List = Loadable(lazy(() => import("./pages/{{ entity }}ListPage")));
+const {{ entity }}Add = Loadable(lazy(() => import("./pages/{{ entity }}AddPage")));
+const {{ entity }}Edit = Loadable(lazy(() => import("./pages/{{ entity }}EditPage")));
+const {{ entity }}View = Loadable(lazy(() => import("./pages/{{ entity }}ViewPage")));
+
+export default [
+    {
+        path: "/{{ kebab_entity }}/new",
+        element: <{{ entity }}Add/>
+    },
+    {
+        path: "/{{ kebab_entity }}/:id/edit",
+        element: <{{ entity }}Edit/>
+    },
+    {
+        path: "/{{ kebab_entity }}/:id",
+        element: <{{ entity }}View/>
+    },
+    {
+        path: "/{{ kebab_entity }}s",
+        element: <{{ entity }}List/>
+    }
+];

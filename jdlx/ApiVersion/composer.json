@@ -1,0 +1,16 @@
+{
+    "name": "jdlx/apiversion",
+    "description": "Append API version to router",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Jeroen de Lau",
+            "email": "jeroen.delau@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Jdlx\\ApiVersion\\": "src/"
+        }
+    }
+}

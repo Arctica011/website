@@ -1,0 +1,28 @@
+import React from "react";
+import {{ entity }}List from "./{{ entity }}List";
+import {{ entity }}Add from "./{{ entity }}Add";
+import {{ entity }}Edit from "./{{ entity }}Edit";
+import {{ entity }}View from "./{{ entity }}View";
+
+export default [
+  {
+    exact: true,
+    path: "/admin/{{ lc_entity }}/new",
+    component: {{ entity }}Add
+  },
+  {
+    exact: true,
+    path: "/admin/{{ lc_entity }}/:id/edit",
+    component: {{ entity }}Edit
+  },
+  {
+    exact: true,
+    path: "/admin/{{ lc_entity }}/:id",
+    component: {{ entity }}View
+  },
+  {
+    exact: true,
+    path: "/admin/{{ lc_entity }}",
+    component: {{ entity }}List
+  }
+];

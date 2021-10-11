@@ -1,0 +1,65 @@
+import React, {useCallback} from "react";
+import {
+  Divider,
+  Paper,
+  Toolbar,
+  Typography,
+  withStyles
+} from "@material-ui/core";
+import {useHistory} from "react-router";
+import api from "../../../services/api";
+import CreateUpdateForm from "../../../shared/components/crud/CreateUpdateForm";
+import {{ entity }}Model from "./{{ entity }}Model";
+
+function {{ entity }}Add(props) {
+  const {
+    classes
+  } = props;
+
+  const history = useHistory();
+
+  const onSaved = useCallback(() => {
+    history.push("/admin/{{ kebab_entity }}");
+  });
+
+  return (
+    <Paper>
+      <Toolbar className={classes.toolbar}>
+        <Typography variant="h6">Add {{ human_entity }}</Typography>
+      </Toolbar>
+      <Divider/>
+      <div className={classes.container}>
+        <CreateUpdateForm
+          crudApi={api.{{ camel_entity }}}
+          mode={"create"}
+          fields={{{ entity }}Model.fields}
+          defaultValues={{}}
+          onSaved={onSaved}
+        />
+      </div>
+    </Paper>
+  );
+}
+
+{{ entity }}Add.propTypes = {};
+
+
+const styles = {
+  toolbar: {
+    justifyContent: "space-between",
+  },
+  container: {
+    minHeight: "50px",
+    padding: "20px"
+  },
+  divider: {
+    backgroundColor: "rgba(0, 0, 0, 0.26)"
+  },
+  actions: {
+    textAlign: "center",
+    padding: "20px 0px"
+  }
+};
+
+
+export default withStyles(styles)({{ entity }}Add);

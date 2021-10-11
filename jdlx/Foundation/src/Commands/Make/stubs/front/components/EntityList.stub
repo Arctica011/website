@@ -1,0 +1,58 @@
+import React from "react";
+import PropTypes from "prop-types";
+import {withStyles} from "@material-ui/core";
+import api from "../../../../services/api";
+import {{ entity }}Model from "../{{ entity }}Model";
+import CrudDataProvider from "../../../../lib/data-table/CrudDataProvider";
+import ConfigProvider from "../../../../lib/data-table/ConfigProvider";
+import ConfigFactory from "../../../../lib/data-table/ConfigFactory";
+import asBareTable from "../../../../lib/data-table/builders/asBareTable";
+import crudFields from "../../../../lib/data-table/builders/crudFields";
+import crudActions from "../../../../lib/data-table/builders/crudActions";
+import paging from "../../../../lib/data-table/builders/paging";
+import sorting from "../../../../lib/data-table/builders/sorting";
+import search from "../../../../lib/data-table/builders/filter";
+import DataTable from "../../../../lib/data-table/DataTable";
+
+class {{ entity }}List extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = this.createProviders();
+
+    }
+
+    createProviders() {
+        const factory = new ConfigFactory();
+        factory
+            .with(asBareTable())
+            .with(crudFields({{ entity }}Model.fields))
+            .with(crudActions("{{ kebab_entity }}"))
+            .with(paging())
+            .with(sorting("name", "asc"))
+            .with(search());
+
+        const dataProvider = new CrudDataProvider(api.{{ camel_entity }}, {});
+        const configProvider = new ConfigProvider();
+
+        factory.build(configProvider, dataProvider);
+        return {configProvider, dataProvider};
+    }
+
+    render() {
+        return (
+            <DataTable
+                configProvider={this.state.configProvider}
+                dataProvider={this.state.dataProvider}
+            />
+        );
+    }
+}
+
+{{ entity }}List.propTypes = {
+
+};
+
+const styles = {};
+
+export default withStyles(styles)({{ entity }}List);

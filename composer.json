@@ -10,7 +10,8 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.54",
         "laravel/sanctum": "^2.11",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "jdlx/jdlx": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -52,6 +53,12 @@
             "dont-discover": []
         }
     },
+    "repositories": [  
+        {
+            "type": "path",
+            "url": "./jdlx/Foundation"
+        }
+    ],
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",

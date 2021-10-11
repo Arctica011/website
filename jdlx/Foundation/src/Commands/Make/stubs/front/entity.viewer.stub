@@ -1,0 +1,71 @@
+import React, {
+  useEffect,
+  useState
+} from "react";
+import PropTypes from "prop-types";
+import {
+  Box,
+  CircularProgress,
+  withStyles
+} from "@material-ui/core";
+import api from "../../../services/api";
+import FieldCollectionView from "../../../shared/components/crud/FieldCollectionView";
+import {{ entity }}Model from "./{{ entity }}Model";
+
+function {{ entity }}View(props) {
+  const {
+    id,
+    classes
+  } = props;
+
+  const [entity, setEntity] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await api.{{ camel_entity }}.get(id);
+      setEntity(res.data);
+    };
+    fetchData();
+  }, [id, setEntity]);
+
+
+  return (
+    <Box className={classes.container}>
+           {!entity && <CircularProgress/>}
+           {entity && (
+               <FieldCollectionView
+                 fields={{{ entity }}Model.fields}
+                 entity={entity}
+               />
+           )}
+         </Box>
+  );
+}
+
+{{ entity }}View.propTypes = {
+  account: PropTypes.object
+};
+
+
+const styles = {
+  toolbar: {
+    justifyContent: "space-between",
+  },
+  container: {
+    minHeight: "50px",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    display: "flex",
+    padding: "0px 20px"
+  },
+  divider: {
+    backgroundColor: "rgba(0, 0, 0, 0.26)"
+  },
+  actions: {
+    textAlign: "center",
+    padding: "20px 0px"
+  }
+};
+
+
+export default withStyles(styles)({{ entity }}View);

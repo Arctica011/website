@@ -1,0 +1,50 @@
+import React from "react";
+import PropTypes from "prop-types";
+import {
+  withStyles
+} from "@material-ui/core";
+import MaterialTable from "material-table";
+import {useHistory} from "react-router";
+import api from "../../../services/api";
+import TableUtils from "../../../shared/crud-tools/TableUtils";
+import {{ entity }}Model from "./{{ entity }}Model";
+import {{ entity }}Editor from "./{{ entity }}Editor";
+
+function {{ entity }}List(props) {
+  const {
+    // classes
+  } = props;
+
+  const history = useHistory();
+  const config = TableUtils.baseConfig('{{ lc_entity }}', {{ entity }}Model.fields, api.{{ camel_entity }}, history, {{ entity }}Editor);
+
+  return (
+    <MaterialTable
+      {...config}
+    />
+  );
+}
+
+{{ entity }}List.propTypes = {
+  account: PropTypes.object
+
+};
+
+
+const styles = {
+  toolbar: {
+    justifyContent: "space-between",
+  },
+  container: {
+    minHeight: "200px",
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex"
+  },
+  divider: {
+    backgroundColor: "rgba(0, 0, 0, 0.26)"
+  }
+};
+
+
+export default withStyles(styles)({{ entity }}List);

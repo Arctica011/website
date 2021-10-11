@@ -1,0 +1,71 @@
+import React, {
+  useEffect,
+  useState
+} from "react";
+import PropTypes from "prop-types";
+import {
+  CircularProgress,
+  Paper,
+  withStyles
+} from "@material-ui/core";
+import api from "../../../services/api";
+import CreateUpdateForm from "../../../shared/components/crud/CreateUpdateForm";
+import {{ entity }}Model from "./{{ entity }}Model";
+
+function {{ entity }}Edit(props) {
+  const {
+      classes,
+      id,
+      onSaved
+    } = props;
+
+  const [{{ camel_entity }}, set{{ entity }}] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await api.{{ camel_entity }}.get(id);
+      set{{ entity }}(res.data);
+    };
+    fetchData();
+  }, [id, set{{ entity }}]);
+
+  return (
+    <Paper>
+      <div className={classes.container}>
+        {!{{ camel_entity }} && <CircularProgress/>}
+        {{{ camel_entity }} && <CreateUpdateForm
+          crudApi={api.{{ camel_entity }}}
+          mode={"update"}
+          fields={{{ entity }}Model.fields}
+          defaultValues={{{ camel_entity }}}
+          onSaved={onSaved}
+        />}
+      </div>
+    </Paper>
+  );
+}
+
+{{ entity }}Edit.propTypes = {
+  {{ camel_entity }}: PropTypes.object
+};
+
+
+const styles = {
+  toolbar: {
+    justifyContent: "space-between",
+  },
+  container: {
+    minHeight: "50px",
+    padding: "20px"
+  },
+  divider: {
+    backgroundColor: "rgba(0, 0, 0, 0.26)"
+  },
+  actions: {
+    textAlign: "center",
+    padding: "20px 0px"
+  }
+};
+
+
+export default withStyles(styles)({{ entity }}Edit);

@@ -1,0 +1,54 @@
+import React, {useCallback} from "react";
+import {Divider, Paper, Toolbar, Typography, withStyles} from "@material-ui/core";
+import {useNavigate} from "react-router";
+import {{ entity }}Form from "./{{ entity }}Form";
+
+function {{ entity }}AddCard(props) {
+    const {
+        classes
+    } = props;
+
+    const navigate = useNavigate();
+
+    const onSaved = useCallback(() => {
+        navigate("../../{{ kebab_entity }}s");
+    }, [navigate]);
+
+    return (
+        <Paper>
+            <Toolbar className={classes.toolbar}>
+                <Typography variant="h6">Add {{ human_entity }}</Typography>
+            </Toolbar>
+            <Divider/>
+            <div className={classes.container}>
+                <{{ entity }}Form
+                    onSaved={onSaved}
+                    mode={"create"}
+                />
+            </div>
+        </Paper>
+    );
+}
+
+{{ entity }}AddCard.propTypes = {};
+
+
+const styles = {
+    toolbar: {
+        justifyContent: "space-between",
+    },
+    container: {
+        minHeight: "50px",
+        padding: "20px"
+    },
+    divider: {
+        backgroundColor: "rgba(0, 0, 0, 0.26)"
+    },
+    actions: {
+        textAlign: "center",
+        padding: "20px 0px"
+    }
+};
+
+
+export default withStyles(styles)({{ entity }}AddCard);

@@ -1,0 +1,31 @@
+<?php
+
+namespace DummyNamespace;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+
+/**
+  * @OA\Schema(
+  *   schema="{{ model }}",
+  *   description="{{ model }} model",
+  *   title="{{ model }} model",
+  *   readOnly=true,
+  * {{ docs }}
+  * )
+  */
+
+class DummyClass extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function toArray($request)
+    {
+        return [
+            {{ resourceFields }}
+        ];
+    }
+}

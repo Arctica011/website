@@ -1,0 +1,23 @@
+{
+    "name": "jdlx/task",
+    "description": "Tasklog for running background tasks",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Jeroen de Lau",
+            "email": "jeroen.delau@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Jdlx\\JdlxTasklogServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Jdlx\\Task\\": "src/"
+        }
+    }
+}

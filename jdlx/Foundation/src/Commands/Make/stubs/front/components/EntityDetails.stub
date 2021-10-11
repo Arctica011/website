@@ -1,0 +1,43 @@
+import React from "react";
+import PropTypes from "prop-types";
+import {Box, CircularProgress, withStyles} from "@material-ui/core";
+import FieldCollectionView from "../../../../lib/crud-tools/crud/FieldCollectionView";
+import {{ entity }}Model from "../{{ entity }}Model";
+
+function {{ entity }}Details(props) {
+    const {
+        classes,
+        entity
+    } = props;
+
+
+    return (
+        <Box className={classes.container}>
+            {!entity && <CircularProgress/>}
+            {entity && (
+                <FieldCollectionView
+                    fields={{{ entity }}Model.fields}
+                    entity={entity}
+                />
+            )}
+        </Box>
+    );
+}
+
+{{ entity }}Details.propTypes = {
+    account: PropTypes.object
+};
+
+
+const styles = {
+    container: {
+        minHeight: "50px",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        display: "flex",
+        padding: "0px 20px"
+    }
+};
+
+
+export default withStyles(styles)({{ entity }}Details);

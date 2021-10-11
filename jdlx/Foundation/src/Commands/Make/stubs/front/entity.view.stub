@@ -1,0 +1,91 @@
+import React, {
+  useContext,
+  useEffect,
+  useState
+} from "react";
+import PropTypes from "prop-types";
+import {
+  Box,
+  Button,
+  Divider,
+  Icon,
+  Paper,
+  Toolbar,
+  Typography,
+  withStyles
+} from "@material-ui/core";
+import {
+  useHistory,
+  useParams
+} from "react-router";
+import api from "../../../services/api";
+import {AuthContext} from "../../../shared/components/AuthContext";
+import Viewer from "./{{ entity }}Viewer";
+
+function {{ entity }}View(props) {
+  const {
+    classes
+  } = props;
+
+
+  const history = useHistory();
+  const {profile} = useContext(AuthContext);
+  const [entity, setEntity] = useState(false);
+  const {id} = useParams();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await api.{{ camel_entity }}.get(id);
+      setEntity(res.data);
+    };
+    fetchData();
+  }, [id, setEntity]);
+
+
+  return (
+    <Paper>
+      <Toolbar className={classes.toolbar}>
+        <Typography variant="h6">{ (entity?.name) ?? "{{ human_entity }}"}</Typography>
+      </Toolbar>
+      <Divider/>
+      <Viewer id={id} />
+      <Box className={classes.actions}>
+        <Button
+          variant={'contained'}
+          color="primary"
+          onClick={() => history.push(`/admin/{{ kebab_entity }}/${id}/edit`)}
+        >
+          <Icon>edit</Icon> Edit
+        </Button>
+      </Box>
+    </Paper>
+  );
+}
+
+{{ entity }}View.propTypes = {
+  account: PropTypes.object
+};
+
+
+const styles = {
+  toolbar: {
+    justifyContent: "space-between",
+  },
+  container: {
+    minHeight: "50px",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    display: "flex",
+    padding: "0px 20px"
+  },
+  divider: {
+    backgroundColor: "rgba(0, 0, 0, 0.26)"
+  },
+  actions: {
+    textAlign: "center",
+    padding: "20px 0px"
+  }
+};
+
+
+export default withStyles(styles)({{ entity }}View);

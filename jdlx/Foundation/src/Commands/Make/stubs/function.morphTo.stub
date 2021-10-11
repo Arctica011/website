@@ -1,0 +1,7 @@
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
+    public function {{ entity }}()
+    {
+        return $this->morphTo();
+    }

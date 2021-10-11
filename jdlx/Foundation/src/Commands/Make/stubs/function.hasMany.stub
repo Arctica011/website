@@ -1,0 +1,8 @@
+<?php
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function {{ entities }}()
+    {
+        return $this->hasMany('{{ relationship_class }}');
+    }

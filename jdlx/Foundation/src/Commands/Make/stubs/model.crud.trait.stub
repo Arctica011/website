@@ -1,0 +1,28 @@
+<?php
+
+namespace {{ trait_namespace }};
+
+use Jdlx\Traits\FieldDescriptor;
+use Carbon\Carbon;
+
+/**
+ * {{ php_doc_props }}
+ *
+ * @package DalPraS\OAuth2\Client\Resources
+ */
+trait {{ trait }}
+{
+    use FieldDescriptor;
+
+   /**
+     * Meta data about the model use for code generation
+     * and other automation.
+     *
+     * @var array
+     */
+    protected static $fieldSetup = [
+            {{ fieldSetup }}
+    ];
+
+{{ relationships }}
+}

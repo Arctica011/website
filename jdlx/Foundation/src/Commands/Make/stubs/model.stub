@@ -1,0 +1,38 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Jdlx\Traits\UsesUuid;
+use {{ trait_namespace }}\{{ trait }};
+
+/**
+ * Class {{ class }}
+ * @package DalPraS\OAuth2\Client\Resources
+ */
+class {{ class }} extends Model
+{
+    use {{ trait }};
+    use UsesUuid;
+    use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        {{ fillable }}
+    ];
+
+    /**
+     * Cast attributes
+     *
+     * @var array
+     */
+    protected $casts = [
+        {{ casts }}
+    ];
+
+}

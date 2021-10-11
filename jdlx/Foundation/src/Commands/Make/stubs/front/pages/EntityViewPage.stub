@@ -1,0 +1,99 @@
+import React from "react";
+import PropTypes from "prop-types";
+import {Box, Button, Card, Container, Grid, Typography, withStyles} from "@material-ui/core";
+import {Helmet} from "react-helmet-async";
+import {Link as RouterLink} from "react-router-dom";
+import useSettings from "../../../../hooks/useSettings";
+import ArrowLeftIcon from "../../../../icons/ArrowLeft";
+import BreadCrumbs from "../../../components/BreadCrumbs";
+import with{{ entity }} from "../with{{ entity }}";
+import {{ entity }}ViewCard from "../components/{{ entity }}ViewCard";
+
+function {{ entity }}ViewPage(props) {
+    const {settings} = useSettings();
+    const name = props?.entity?.name ?? "";
+
+    return (
+        <>
+            <Helmet>
+                <title>{`{{ entity }} | ${name}`}</title>
+            </Helmet>
+            <Box
+                sx={{
+                    backgroundColor: 'background.default',
+                    minHeight: '100%',
+                    py: 8
+                }}
+            >
+                <Container maxWidth={settings.compact ? 'xl' : false}>
+                    <Grid
+                        container
+                        justifyContent="space-between"
+                        spacing={3}
+                    >
+                        <Grid item>
+                            <Typography
+                                color="textPrimary"
+                                variant="h5"
+                            >
+                                {`{{ entity }}: ${name}`}
+                            </Typography>
+                            <BreadCrumbs path={[
+                                {link: "/dashboard", label: "Dashboard"},
+                                {link: "/dashboard/{{ kebab_entity }}s", label: "{{ entity }}s"},
+                                {label: name},
+                            ]}/>
+                        </Grid>
+                        <Grid item>
+                            <Box sx={{m: -1}}>
+                                <Button
+                                    color="primary"
+                                    component={RouterLink}
+                                    startIcon={<ArrowLeftIcon fontSize="small"/>}
+                                    sx={{mt: 1}}
+                                    to="../../{{ kebab_entity }}s"
+                                    variant="outlined"
+                                >
+                                    Back
+                                </Button>
+                            </Box>
+                        </Grid>
+                    </Grid>
+                    <Box sx={{mt: 3}}>
+                        <Card {...props}>
+                            <{{ entity }}ViewCard entity={props.entity}/>
+                        </Card>
+                    </Box>
+                </Container>
+            </Box>
+        </>
+    );
+}
+
+{{ entity }}ViewPage.propTypes = {
+    account: PropTypes.object
+};
+
+
+const styles = {
+    toolbar: {
+        justifyContent: "space-between",
+    },
+    container: {
+        minHeight: "50px",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        display: "flex",
+        padding: "0px 20px"
+    },
+    divider: {
+        backgroundColor: "rgba(0, 0, 0, 0.26)"
+    },
+    actions: {
+        textAlign: "center",
+        padding: "20px 0px"
+    }
+};
+
+
+export default withStyles(styles)(with{{ entity }}({{ entity }}ViewPage));

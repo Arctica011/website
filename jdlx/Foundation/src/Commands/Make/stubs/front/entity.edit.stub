@@ -1,0 +1,80 @@
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useState
+} from "react";
+import PropTypes from "prop-types";
+import {
+  Divider,
+  Paper,
+  Toolbar,
+  Typography,
+  withStyles
+} from "@material-ui/core";
+import {
+  useHistory,
+  useParams
+} from "react-router";
+import api from "../../../services/api";
+import {AuthContext} from "../../../shared/components/AuthContext";
+import Editor from "./{{ entity }}Editor";
+
+function {{ entity }}Edit(props) {
+  const {
+    classes
+  } = props;
+
+  const history = useHistory();
+  const {profile} = useContext(AuthContext);
+  const {id} = useParams();
+
+  const [{{ camel_entity }}, set{{ entity }}] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await api.{{ camel_entity }}.get(id);
+      set{{ entity }}(res.data);
+    };
+    fetchData();
+  }, [id, set{{ entity }}]);
+
+  const onSaved = useCallback(() => {
+    history.push(`/admin/{{ kebab_entity }}/${id}`);
+  }, [id]);
+
+  return (
+    <Paper>
+      <Toolbar className={classes.toolbar}>
+        <Typography variant="h6">Edit: {{{ camel_entity }} && {{ camel_entity }}.name}</Typography>
+      </Toolbar>
+      <Divider/>
+      <Editor id={id} onSaved={onSaved} />
+    </Paper>
+  );
+}
+
+{{ entity }}Edit.propTypes = {
+  {{ camel_entity }}: PropTypes.object
+};
+
+
+const styles = {
+  toolbar: {
+    justifyContent: "space-between",
+  },
+  container: {
+    minHeight: "50px",
+    padding: "20px"
+  },
+  divider: {
+    backgroundColor: "rgba(0, 0, 0, 0.26)"
+  },
+  actions: {
+    textAlign: "center",
+    padding: "20px 0px"
+  }
+};
+
+
+export default withStyles(styles)({{ entity }}Edit);

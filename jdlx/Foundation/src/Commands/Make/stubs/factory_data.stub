@@ -1,0 +1,8 @@
+    $columns = [{{ columns }}];
+    $rows = [
+        {{ rows }}
+    ];
+
+    foreach($rows as $row){
+        {{ model }}::factory()->create(array_combine($columns, $row));
+    }
